@@ -12,7 +12,7 @@ produce_config = {
     'sasl.mechanisms': 'PLAIN',
     'sasl.username': kafka_username,
     'sasl.password': kafka_password
-    }
+}
 
 producer = Producer(produce_config)
 

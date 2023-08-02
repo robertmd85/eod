@@ -21,12 +21,12 @@ consumer_config = {
 consumer = Consumer(consumer_config)
 
 
-def consume(topic: str) -> None:
+async def consume(topic: str) -> None:
     consumer.subscribe([topic])
     try:
         while True:
             print("Waiting for message...")
-            msg = consumer.poll(1.0)
+            msg = await consumer.poll(1.0)
             if msg is None:
                 continue
             elif msg.error():
@@ -35,7 +35,7 @@ def consume(topic: str) -> None:
             else:
                 print(f'Consumed message: {msg.value().decode("utf-8")}')
     except KeyboardInterrupt:
-        consumer.close()
+        await consumer.close()
         print("Consumer closed.")
 
 

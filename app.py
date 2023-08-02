@@ -1,16 +1,12 @@
+from utils import eod
 from utils import postgres
-from utils import eodh
+from json import dumps as json_dumps
 import asyncio
 
 
 async def main() -> None:
-    connection = await postgres.connect_to_postgres()
-    fundamentals = eodh.get_fundamentals("AAPL", "US", "General::Exchange")
-    live_delayed = eodh.get_live_delayed("AAPL", "US")
-    await eodh.get_live_socket("AMZN, TSLA", "US")
-    await postgres.insert_json_data(connection, "fundamentals", fundamentals)
-    print(fundamentals)
-    print(live_delayed)
-
+    await postgres.insert_json_data("fundamentals", eod.get_live_delayed("AAPL.US"))
+    await postgres.insert_json_data("live_delayed", eod.get_live_delayed("AAPL.US"))
+    await eod.get_live_socket("AMZN.TSLA")
 
 asyncio.run(main())
