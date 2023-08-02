@@ -42,6 +42,8 @@ async def get_live_socket(symbol: str) -> None:
                     message = await websocket.recv()
                     if "status_code" not in message:
                         kafka.produce("stock_prices", message)
+                    else:
+                        print(message)
             except KeyboardInterrupt:
                 await websocket.close()
     except Exception as e:
