@@ -21,11 +21,15 @@ consumer_config = {
 consumer = Consumer(consumer_config)
 
 
+def close_consumer() -> None:
+    consumer.close()
+    print("Consumer closed.")
+
+
 def consume(topic: str) -> None:
     consumer.subscribe([topic])
     try:
         while True:
-            print("Waiting for message...")
             msg = consumer.poll(1.0)
             if msg is None:
                 continue
@@ -36,9 +40,9 @@ def consume(topic: str) -> None:
                 print(f'Consumed message: {msg.value().decode("utf-8")}')
     except Exception as e:
         print(f"Error: {e}")
+        close_consumer()
     finally:
-        consumer.close()
-        print("Consumer closed.")
+        close_consumer()
 
 
 consume("stock_prices")
