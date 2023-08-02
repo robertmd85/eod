@@ -34,7 +34,9 @@ async def consume(topic: str) -> None:
                 continue
             else:
                 print(f'Consumed message: {msg.value().decode("utf-8")}')
-    except KeyboardInterrupt:
+    except Exception as e:
+        print(f"Error: {e}")
+    finally:
         await consumer.close()
         print("Consumer closed.")
 
