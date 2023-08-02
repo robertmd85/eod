@@ -21,12 +21,12 @@ consumer_config = {
 consumer = Consumer(consumer_config)
 
 
-async def consume(topic: str) -> None:
+def consume(topic: str) -> None:
     consumer.subscribe([topic])
     try:
         while True:
             print("Waiting for message...")
-            msg = await consumer.poll(1.0)
+            msg = consumer.poll(1.0)
             if msg is None:
                 continue
             elif msg.error():
@@ -37,7 +37,7 @@ async def consume(topic: str) -> None:
     except Exception as e:
         print(f"Error: {e}")
     finally:
-        await consumer.close()
+        consumer.close()
         print("Consumer closed.")
 
 
